@@ -27,3 +27,5 @@ moviesRouter.delete('/movies/movieId',
       movieId: Joi.string().required().length(24).hex(),
     }),
   }), deleteMovieById); // даляет сохранённый фильм по id
+
+module.exports = moviesRouter;

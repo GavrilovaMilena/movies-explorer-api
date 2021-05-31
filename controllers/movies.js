@@ -1,11 +1,11 @@
-const Movies = require('../models/movies');
+const Movie = require('../models/movies');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 const BadRequestError = require('../errors/BadRequestError');
 
 module.exports.getMovies = (req, res, next) => {
-  Movies.find({})
-    .then((movies) => res.send(movies))
+  Movie.find({})
+    .then((movie) => res.send(movie))
     .catch(next);
 };
 
@@ -23,7 +23,7 @@ module.exports.createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
-  Movies.create({
+  Movie.create({
     country,
     director,
     duration,
@@ -60,7 +60,7 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovieById = (req, res, next) => {
-  Movies.findById(req.params._id)
+  Movie.findById(req.params._id)
     .orFail(() => {
       const error = new Error('CastError');
       error.statusCode = 404;
@@ -71,7 +71,7 @@ module.exports.deleteMovieById = (req, res, next) => {
       } else if (!movie.owner.equals(req.user._id)) {
         next(new ForbiddenError('Невозможно удалить чужую карточку'));
       } else {
-        Movies.findByIdAndRemove(req.params._id)
+        Movie.findByIdAndRemove(req.params._id)
           .orFail(() => {
             const error = new Error('CastError');
             error.statusCode = 404;
@@ -80,7 +80,7 @@ module.exports.deleteMovieById = (req, res, next) => {
             if (!movie) {
               next(new NotFoundError('Карточка не найдена'));
             } else {
-              Movies.deleteOne(movie);
+              Movie.deleteOne(movie);
               res.status(200).send({
                 message: 'Карточка удалена успешно',
               });

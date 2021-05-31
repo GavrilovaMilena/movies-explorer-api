@@ -43,8 +43,9 @@ app.use('/', router);
 
 app.use(auth);
 
-app.use('/', usersRouter);
+
 app.use('/', moviesRouter);
+app.use('/', usersRouter);
 
 app.use(errorLogger);
 
