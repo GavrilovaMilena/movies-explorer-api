@@ -43,7 +43,6 @@ app.use('/', router);
 
 app.use(auth);
 
-
 app.use('/', moviesRouter);
 app.use('/', usersRouter);
 
