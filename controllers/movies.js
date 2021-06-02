@@ -67,9 +67,9 @@ module.exports.deleteMovieById = (req, res, next) => {
       throw error;
     }).then((movie) => {
       if (!movie) {
-        next(new NotFoundError('Карточка не найдена'));
+        next(new NotFoundError('Фильм не нейден'));
       } else if (!movie.owner.equals(req.user._id)) {
-        next(new ForbiddenError('Невозможно удалить чужую карточку'));
+        next(new ForbiddenError('Невозможно удалить чужой фильм'));
       } else {
         Movie.findByIdAndRemove(req.params._id)
           .orFail(() => {
@@ -78,11 +78,11 @@ module.exports.deleteMovieById = (req, res, next) => {
             throw error;
           }).then(() => {
             if (!movie) {
-              next(new NotFoundError('Карточка не найдена'));
+              next(new NotFoundError('Фильм не найден'));
             } else {
               Movie.deleteOne(movie);
               res.status(200).send({
-                message: 'Карточка удалена успешно',
+                message: 'Фильм удален успешно',
               });
             }
           })
