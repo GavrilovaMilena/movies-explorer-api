@@ -49,4 +49,4 @@ function findUserByCredentials(email, password) {
 }
 usersSchema.statics.findUserByCredentials = findUserByCredentials;
 
-module.exports = mongoose.model('movies', usersSchema);
+module.exports = mongoose.model('users', usersSchema);

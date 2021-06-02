@@ -26,8 +26,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        const regex = /(https?:\/\/)([\da-zA-Z\-.]+)([\da-zA-Z-._~:/?#[\]@!$&'()*+,;=]+)/;
-        return regex.test(v);
+        return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]+\.[a-zA-Z0-9()]+([-a-zA-Z0-9()@:%_\\+.~#?&/=#]*)/gi.test(v);
       },
     },
   },
@@ -36,18 +35,16 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        const regex = /(https?:\/\/)([\da-zA-Z\-.]+)([\da-zA-Z-._~:/?#[\]@!$&'()*+,;=]+)/;
-        return regex.test(v);
+        return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]+\.[a-zA-Z0-9()]+([-a-zA-Z0-9()@:%_\\+.~#?&/=#]*)/gi.test(v);
       },
     },
   },
   thumbnail: {
-    type: Number,
+    type: String,
     required: true,
     validate: {
       validator(v) {
-        const regex = /(https?:\/\/)([\da-zA-Z\-.]+)([\da-zA-Z-._~:/?#[\]@!$&'()*+,;=]+)/;
-        return regex.test(v);
+        return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]+\.[a-zA-Z0-9()]+([-a-zA-Z0-9()@:%_\\+.~#?&/=#]*)/gi.test(v);
       },
     },
   },
@@ -55,9 +52,10 @@ const movieSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
+    select: false,
   },
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     required: true,
   },
   nameRU: {
@@ -70,4 +68,4 @@ const movieSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('movie', movieSchema);
+module.exports = mongoose.model('movies', movieSchema);

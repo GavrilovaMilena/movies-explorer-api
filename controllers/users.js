@@ -7,27 +7,22 @@ const ConflictError = require('../errors/ConflictError');
 const AuthError = require('../errors/AuthError');
 
 module.exports.getUser = (req, res, next) => {
-  User.findById(req.params._id)
-    .orFail(() => {
-      const error = new Error('Пользователь не найден');
-      error.statusCode = 404;
-      throw error;
-    })
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         next(new NotFoundError('Пользователь не найден'));
       } else {
-        res.send(user);
+        res.status(200).send(user);
       }
     })
     .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
-  const { name, about } = req.body;
+  const { email, name } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name, about },
+    { name, email },
     { new: true, runValidators: true },
   )
     .orFail(() => {

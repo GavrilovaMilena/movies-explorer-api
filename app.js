@@ -3,22 +3,20 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+
+const DB_ADDRESS = require('./utils/config');
+const limiter = require('./utils/rateLimit');
 
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
 const router = require('./routes/app');
+const errorRouter = require('./routes/error');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-});
-
 // Слушаем 3000 порт
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_LOCAL = DB_ADDRESS } = process.env;
 
 const app = express();
 
@@ -28,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // подключаемся к серверу mongo
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect(DB_LOCAL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -45,6 +43,7 @@ app.use(auth);
 
 app.use('/', moviesRouter);
 app.use('/', usersRouter);
+app.use('/', errorRouter);
 
 app.use(errorLogger);
 
@@ -54,11 +53,9 @@ app.use((err, req, res, next) => {
   const { message } = err;
   const statusCode = err.statusCode || 500;
   res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'Произошла ошибка на сервере'
-      : message,
+    message: statusCode === 500 ? 'Произошла ошибка на сервере' : message,
   });
   next();
 });
 
-app.listen(PORT, () => {});
+app.listen(PORT, () => { });
