@@ -15,8 +15,8 @@ const errorRouter = require('./routes/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 
-// Слушаем 3000 порт
-const { PORT = 3000, DB_LOCAL = DB_ADDRESS } = process.env;
+// Слушаем 3001 порт
+const { PORT = 3001, DB_LOCAL = DB_ADDRESS } = process.env;
 
 const app = express();
 
