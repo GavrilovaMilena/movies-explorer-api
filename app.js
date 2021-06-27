@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
-const cors = require('cors');
 
 const DB_ADDRESS = require('./utils/config');
 const limiter = require('./utils/rateLimit');
@@ -22,7 +21,6 @@ const { PORT = 3001, DB_LOCAL = DB_ADDRESS } = process.env;
 const app = express();
 
 app.use(helmet());
-app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
