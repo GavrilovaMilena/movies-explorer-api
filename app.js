@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
+const cors = require('cors');
 
 const DB_ADDRESS = require('./utils/config');
 const limiter = require('./utils/rateLimit');
@@ -34,6 +35,8 @@ mongoose.connect(DB_LOCAL, {
 });
 
 app.use(requestLogger);
+
+app.use(cors());
 
 app.use(limiter);
 
