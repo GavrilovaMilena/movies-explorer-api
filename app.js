@@ -19,7 +19,7 @@ const auth = require('./middlewares/auth');
 const options = {
   origin: [
     'http://localhost:3001',
-    'https://alligator.nomoredomains.icu'
+    'https://api.alligator.nomoredomains.icu'
   ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
