@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { createUser, login } = require('../controllers/users');
+const { register, login } = require('../controllers/users');
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -8,7 +8,7 @@ router.post('/signup', celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
-}), createUser);
+}), register);
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
